@@ -1,12 +1,16 @@
 import { useState } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+
 
 function App() {
   const [short, setShort] = useState(null);
   const [url, setURL] = useState("");
   const [copied, setCopied] = useState(false);
+  const [loading,setLoading] = useState(false)
 
   async function ShortURL() {
     try {
+      setLoading(true)
       const response = await fetch("http://localhost:8000/api/v1/shortner", {
         method: "POST",
         headers: {
@@ -16,13 +20,15 @@ function App() {
           originalURL: url,
         }),
       });
-
+      setLoading(false)
       const result = await response.json();
       if (response.ok) {
         setShort(result);
         setCopied(false); // Reset copied state
+        toast("Short URL Generate Successfully")
       } else {
         console.error("Error:", result.message);
+        toast("Error While send Request")
       }
     } catch (e) {
       console.error("Error while shortening URL:", e);
@@ -38,6 +44,8 @@ function App() {
   }
 
   return (
+    <>
+    <ToastContainer />
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 px-4">
       <div className="w-full max-w-md bg-gray-800 p-6 rounded-2xl shadow-xl">
         <h2 className="text-white text-xl font-bold text-center mb-4">
@@ -53,9 +61,10 @@ function App() {
           />
           <button
             onClick={ShortURL}
+            disabled={loading}
             className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
           >
-            Shorten
+            {loading ? "Loading..." : "Short URL"}
           </button>
         </div>
 
@@ -78,6 +87,7 @@ function App() {
         )}
       </div>
     </div>
+  </>
   );
 }
 
