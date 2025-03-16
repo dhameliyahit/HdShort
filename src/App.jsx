@@ -11,7 +11,7 @@ function App() {
   async function ShortURL() {
     try {
       setLoading(true)
-      const response = await fetch("http://localhost:8000/api/v1/shortner", {
+      const response = await fetch("https://hdshort.vercel.app/api/v1/shortner", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
