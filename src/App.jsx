@@ -10,7 +10,7 @@ function App() {
   const [error, setError] = useState("");
 
   const validateURL = (input) => {
-    const urlPattern = /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)(\/[\w-./?%&=]*)?$/i;
+    const urlPattern = /^(https?:\/\/)([\w.-]+)/i;
     if (!urlPattern.test(input) && input !== "") {
       setError("Please enter a valid URL");
     } else {
